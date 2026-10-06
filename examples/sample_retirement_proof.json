@@ -1,0 +1,19 @@
+{
+  "order_id": "1",
+  "project_standard": "VERRA",
+  "serial_number": "VCS-1844-2023-45678",
+  "tonnes_co2": 500,
+  "beneficiary_name": "Acme CleanTech Corp",
+  "retirement_url": "https://registry.verra.org/ui/verify/VCS-1844-2023-45678",
+  "mock_page_evidence": {
+    "status": "RETIRED",
+    "serial": "VCS-1844-2023-45678",
+    "tonnes": 500,
+    "beneficiary": "Acme CleanTech Corp",
+    "retirement_reason": "Scope 1 & 2 Corporate Neutrality 2026",
+    "retirement_date": "2026-10-01"
+  },
+  "verdict": "VERIFIED_RETIRED",
+  "confidence": 98,
+  "reason": "Official Verra Registry page confirms 500 tonnes permanently retired for Acme CleanTech Corp."
+}
