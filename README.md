@@ -2,6 +2,7 @@
 
 > **Track:** Real-World Settlement / Regenerative Finance (ReFi)  
 > **Network:** GenLayer studionet (Chain ID: `61999` / `0xF1EF`)  
+> **Contract Address:** `0x36B11e29C97d8953E78f092fa7065421A700a9D2`  
 > **Target Environment:** [GenLayer Studio](https://studio.genlayer.com)  
 > **Execution Engine:** GenVM / Optimistic Democracy Subjective Consensus  
 > **Package / SDK:** `py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6`  
@@ -9,7 +10,19 @@
 
 ---
 
-## 1. Executive Summary & Problem Statement
+## 1. Deployment & Live Network Evidence
+
+The `CarbonOffsetOracleX` Intelligent Contract is successfully deployed on GenLayer studionet:
+
+- **Contract Address:** `0x36B11e29C97d8953E78f092fa7065421A700a9D2`
+- **Network:** `studionet` (Chain ID: `61999` / `0xF1EF`)
+- **Explorer:** [https://explorer.genlayer.com/address/0x36B11e29C97d8953E78f092fa7065421A700a9D2](https://explorer.genlayer.com/address/0x36B11e29C97d8953E78f092fa7065421A700a9D2)
+- **Studio Explorer:** [https://explorer-studio.genlayer.com/address/0x36B11e29C97d8953E78f092fa7065421A700a9D2](https://explorer-studio.genlayer.com/address/0x36B11e29C97d8953E78f092fa7065421A700a9D2)
+- **Contract Source:** [`contracts/carbon_offset_oracle_x.py`](contracts/carbon_offset_oracle_x.py)
+
+---
+
+## 2. Executive Summary & Problem Statement
 
 The voluntary carbon market (VCM) is currently projected to grow into a multi-billion-dollar global asset class. However, it is chronically plagued by **double counting**, **double spending**, and **greenwashing**:
 
@@ -21,7 +34,7 @@ The voluntary carbon market (VCM) is currently projected to grow into a multi-bi
 
 ---
 
-## 2. Core Architecture & GenLayer Primitive
+## 3. Core Architecture & GenLayer Primitive
 
 ```
 +-------------------------------------------------------------------------------------------------------+
@@ -64,7 +77,7 @@ The voluntary carbon market (VCM) is currently projected to grow into a multi-bi
 
 ---
 
-## 3. Security Pillars & Economic Determinism
+## 4. Security Pillars & Economic Determinism
 
 ### A. Persistent On-Chain Double-Spending Prevention
 Traditional contracts have no memory across transactions unless explicitly registered. CarbonOffsetOracleX maintains an immutable registry:
@@ -109,7 +122,7 @@ If a seller accepts an order but fails to submit an official registry proof URL 
 
 ---
 
-## 4. Worked Example: Order Lifecycle & Settlement
+## 5. Worked Example: Order Lifecycle & Settlement
 
 Below is an end-to-end worked example verified with local `gltest` test runs:
 
@@ -167,7 +180,7 @@ Below is an end-to-end worked example verified with local `gltest` test runs:
 
 ---
 
-## 5. Contract API Reference
+## 6. Contract API Reference
 
 ### Storage Schema
 ```python
@@ -208,7 +221,7 @@ custom_allowed_registries: TreeMap[str, bool]
 
 ---
 
-## 6. Testing & Quality Assurance
+## 7. Testing & Quality Assurance
 
 The test suite covers full happy path and adversarial edge cases using `gltest`:
 
@@ -235,17 +248,17 @@ pytest tests/ -v
 
 ---
 
-## 7. Deployment Guide (GenLayer Studio)
+## 8. Deployment Guide (GenLayer Studio)
 
 1. Open [GenLayer Studio](https://studio.genlayer.com).
 2. Connect your Web3 wallet (MetaMask) and ensure you are connected to **studionet** (Chain ID: `61999` / `0xF1EF`).
 3. Create a new contract file: `carbon_offset_oracle_x.py`.
 4. Copy the complete source code from [`contracts/carbon_offset_oracle_x.py`](contracts/carbon_offset_oracle_x.py).
 5. Click **Deploy**. Ensure the transaction receipt displays `Result: SUCCESS`.
-6. Record the deployed contract address in `.env` and `README.md`.
+6. Contract is live on studionet at: `0x36B11e29C97d8953E78f092fa7065421A700a9D2`.
 
 ---
 
-## 8. License
+## 9. License
 
 MIT License. Built for the GenLayer Ecosystem.
