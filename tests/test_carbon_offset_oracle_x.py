@@ -36,7 +36,17 @@ def setup_post_message_hook(direct_vm):
 
 @pytest.fixture
 def contract(direct_deploy):
-    return direct_deploy("contracts/carbon_offset_oracle_x.py")
+    c = direct_deploy("contracts/carbon_offset_oracle_x.py")
+    import sys
+    for name, mod in list(sys.modules.items()):
+        if name == "genlayer.gl" or name.endswith(".gl"):
+            if hasattr(mod, "vm") and hasattr(mod.vm, "UserError"):
+                setattr(mod, "UserError", mod.vm.UserError)
+        if "genlayer" in name and hasattr(mod, "gl"):
+            gl_obj = getattr(mod, "gl")
+            if hasattr(gl_obj, "vm") and hasattr(gl_obj.vm, "UserError"):
+                setattr(gl_obj, "UserError", gl_obj.vm.UserError)
+    return c
 
 
 def test_initial_state(contract, direct_vm):

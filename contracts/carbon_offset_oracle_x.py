@@ -3,12 +3,6 @@ from genlayer import *
 from dataclasses import dataclass
 import json
 
-if not hasattr(gl, "UserError"):
-    try:
-        gl.UserError = gl.vm.UserError
-    except Exception:
-        pass
-
 
 def _addr_str(addr: Address) -> str:
     """Safely format an Address instance into a lowercase hex string."""
@@ -172,7 +166,10 @@ class Contract(gl.Contract):
         clean = domain.strip().lower()
         if clean in DEFAULT_CARBON_REGISTRIES:
             return True
-        return clean in self.custom_allowed_registries and self.custom_allowed_registries[clean]
+        try:
+            return bool(self.custom_allowed_registries[clean])
+        except Exception:
+            return False
 
     @gl.public.write.payable
     def create_order(
@@ -207,7 +204,13 @@ class Contract(gl.Contract):
 
         # Prevent double-spending across the entire protocol
         serial_key = f"{clean_std}:{clean_serial}"
-        if serial_key in self.consumed_serials and self.consumed_serials[serial_key]:
+        is_already_consumed = False
+        try:
+            is_already_consumed = bool(self.consumed_serials[serial_key])
+        except Exception:
+            is_already_consumed = False
+
+        if is_already_consumed:
             raise gl.UserError("This carbon credit serial number has already been retired and settled on-chain.")
 
         dl = bigint(deadline_timestamp)
@@ -289,9 +292,13 @@ class Contract(gl.Contract):
 
         # Canonical Registry Host Validation
         host = _parse_url_host(clean_url)
-        is_allowed = (host in DEFAULT_CARBON_REGISTRIES) or (
-            host in self.custom_allowed_registries and self.custom_allowed_registries[host]
-        )
+        is_allowed = host in DEFAULT_CARBON_REGISTRIES
+        if not is_allowed:
+            try:
+                is_allowed = bool(self.custom_allowed_registries[host])
+            except Exception:
+                is_allowed = False
+
         if not is_allowed:
             raise gl.UserError(f"Registry domain '{host}' is not in the allowed registry whitelist.")
 
@@ -524,7 +531,10 @@ Respond ONLY with a VALID JSON object (no markdown, no backticks):
     def is_serial_consumed(self, project_standard: str, serial_number: str) -> bool:
         """Check if a specific carbon credit serial has already been settled and consumed on-chain."""
         serial_key = f"{project_standard.strip().upper()}:{serial_number.strip().upper()}"
-        return serial_key in self.consumed_serials and self.consumed_serials[serial_key]
+        try:
+            return bool(self.consumed_serials[serial_key])
+        except Exception:
+            return False
 
     @gl.public.view
     def get_order(self, order_id: str) -> str:
